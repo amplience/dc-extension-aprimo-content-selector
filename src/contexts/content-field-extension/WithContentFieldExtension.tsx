@@ -12,6 +12,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
   const [aprimoValue, setAprimoValue] = useState<AprimoValue>();
   const [formValue, setFormValue] = useState({});
   const [readOnly, setReadOnly] = useState(false);
+  const [params, setParams] = useState({});
 
   useEffect(() => {
     const setupSdk = async () => {
@@ -19,6 +20,10 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       const initialValue = (await sdk.field.getValue()) as AprimoValue;
       setInitialAprimoValue(initialValue);
       setAprimoValue(initialValue);
+      setParams({
+        ...sdk.params.installation,
+        ...sdk.params.instance,
+      });
       sdk.frame.startAutoResizer();
       sdk.form.onReadOnlyChange(setReadOnly);
       sdk.form.onFormValueChange(setFormValue);
@@ -33,7 +38,6 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
   const setAprimoImage = async (aprimoImage: AprimoImage) => {
     await sdk?.field.setValue({ aprimoImage });
     const updatedAprimoValue = await sdk?.field.getValue();
-    console.log(updatedAprimoValue);
     setAprimoValue(updatedAprimoValue);
   };
 
@@ -43,6 +47,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
         value={{
           sdk,
           readOnly,
+          params,
           formValue,
           initialAprimoValue,
           aprimoValue,

@@ -1,24 +1,26 @@
 import { useContentFieldExtension } from "../contexts/content-field-extension/ContentFieldExtensionHook";
 
-const TENANT_URL = "https://partnerdemo114.dam.aprimo.com";
-
 function AprimoContentSelector() {
-  const { aprimoValue, setAprimoImage } = useContentFieldExtension();
+  const { aprimoValue, setAprimoImage, params } = useContentFieldExtension();
 
   const openContentSelector = () => {
-    const selectorOptions = {
-      select: "singlerendition",
-    };
-    const encodedOptions = window.btoa(JSON.stringify(selectorOptions));
-    const contentSelectorUrl = `${TENANT_URL}/dam/selectcontent#options=${encodedOptions}`;
+    const tenantUrl = params?.aprimoConfig?.tenantUrl;
+    const encodedOptions = window.btoa(
+      JSON.stringify({
+        select: "singlerendition",
+        limitingSearchExpression: 'ContentType = "Image"',
+      })
+    );
+    const contentSelectorUrl = `${tenantUrl}/dam/selectcontent#options=${encodedOptions}`;
     const handleMessageEvent = async (event: MessageEvent) => {
-      if (event.origin !== TENANT_URL) {
+      if (event.origin !== tenantUrl) {
         return; // exit if origin is not Aprimo
       }
       if (event.data.result === "cancel") {
         return;
       }
       const aprimoImage = event.data.selection[0] || {};
+
       await setAprimoImage(aprimoImage);
     };
 

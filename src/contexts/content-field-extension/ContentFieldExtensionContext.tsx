@@ -11,11 +11,18 @@ export type AprimoValue = {
   aprimoImage?: AprimoImage;
 };
 
+export type Params = {
+  aprimoConfig?: {
+    tenantUrl: string;
+  };
+};
+
 export type ContentFieldExtensionContextState = {
   sdk: ContentFieldExtension;
   initialAprimoValue?: AprimoValue;
   formValue: unknown;
   readOnly: boolean;
+  params?: Params;
   aprimoValue?: AprimoValue;
   setAprimoImage: (aprimoImage: AprimoImage) => Promise<void>;
 };
