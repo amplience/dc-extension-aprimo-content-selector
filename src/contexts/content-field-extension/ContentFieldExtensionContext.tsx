@@ -19,6 +19,8 @@ export type ContentFieldExtensionContextState = {
   formValue: unknown;
   readOnly: boolean;
   params?: Params;
+  title: string;
+  description: string;
   aprimoValue?: AprimoValue;
   setAprimoImage: (aprimoImage: AprimoValue) => Promise<void>;
 };

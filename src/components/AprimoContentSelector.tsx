@@ -9,9 +9,11 @@ import { AddIcon } from "./icons/AddIcon";
 import { isEmpty } from "../utils/isEmpty";
 import { ImageCardSkeleton } from "./image-card/ImageCardSkeleton";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { FieldDetails } from "./field-details/FieldDetails";
 
 function AprimoContentSelector() {
-  const { aprimoValue, setAprimoImage, params } = useContentFieldExtension();
+  const { aprimoValue, setAprimoImage, params, title, description } =
+    useContentFieldExtension();
   const TENANT_URL = params?.aprimoConfig?.tenantUrl;
 
   const openContentSelector = () => {
@@ -51,6 +53,7 @@ function AprimoContentSelector() {
   return (
     <>
       <div>
+        <FieldDetails title={title} description={description} />
         {!isEmpty(aprimoValue) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>

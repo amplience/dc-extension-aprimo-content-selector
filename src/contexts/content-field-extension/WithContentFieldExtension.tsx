@@ -12,6 +12,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
   const [formValue, setFormValue] = useState({});
   const [readOnly, setReadOnly] = useState(false);
   const [params, setParams] = useState({});
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const setupSdk = async () => {
@@ -23,6 +25,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
         ...sdk.params.installation,
         ...sdk.params.instance,
       });
+      setTitle(sdk.field.schema?.title || "");
+      setDescription(sdk.field.schema?.description || "");
       sdk.frame.startAutoResizer();
       sdk.form.onReadOnlyChange(setReadOnly);
       sdk.form.onFormValueChange(setFormValue);
@@ -47,6 +51,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
           sdk,
           readOnly,
           params,
+          title,
+          description,
           formValue,
           initialAprimoValue,
           aprimoValue,
