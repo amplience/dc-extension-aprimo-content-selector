@@ -1,30 +1,62 @@
 # dc-extension-aprimo-content-selector
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This extension allows customers to browse and select files from Aprimo DAM directly in Amplience Dynamic Content.
 
-Currently, two official plugins are available:
+## 🏁 Quickstart
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Register Extension
 
-## Expanding the ESLint configuration
+This extension needs to be [registered](https://amplience.com/docs/development/registeringextensions.html) against a Hub with in the Dynamic Content application (Developer -> Extensions), for it to load within that Hub.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Category: Content Field
+- Label: Aprimo
+- Name: aprimo-content-selector (needs to be unique with the Hub)
+- URL: <url_to_hosted_extension> (can be `http://localhost:5173` if you are running the extension locally)
+- Description: Aprimo image selector (can be left blank, if you wish)
+- Initial height: 200
 
-- Configure the top-level `parserOptions` property like this:
+### Extension Permissions
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: "latest",
-    sourceType: "module",
-    project: ["./tsconfig.json", "./tsconfig.node.json", "./tsconfig.app.json"],
-    tsconfigRootDir: __dirname,
-  },
-};
+Under the Permissions tab, select the following:
+
+Sandbox Permissions:
+
+- ✅ Allow Pop-ups
+- ✅ Allow Pop-ups to escape sandbox
+
+### Extension Installation Parameters
+
+Use the following installation parameters:
+
+```json
+{
+  "aprimoConfig": {
+    "tenantUrl": "<your_aprimo_dam_tenant_url>"
+  }
+}
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Running the extension locally
+
+Setup and install package dependencies
+
+```bash
+nvm use
+npm install
+```
+
+Run the extension
+
+```bash
+npm run dev
+```
+
+## Building and hosting the extension
+
+Build the project to produce hostable files using:
+
+```bash
+npm run build
+```
+
+This will produce a `dist` folder in the root of the project. You can use the files to host them statically (e.g. S3) or through your prefered hosting solution (Vercel, Netlify)
