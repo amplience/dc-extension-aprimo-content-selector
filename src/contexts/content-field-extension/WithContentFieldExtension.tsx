@@ -15,7 +15,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const setupSdk = async () => {
-      const sdk = await init<ContentFieldExtension>();
+      const sdk = await init<ContentFieldExtension<AprimoValue>>();
       const initialValue = (await sdk.field.getValue()) as AprimoValue;
       setInitialAprimoValue(initialValue);
       setAprimoValue(initialValue);
