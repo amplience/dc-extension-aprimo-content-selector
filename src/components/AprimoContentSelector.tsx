@@ -8,21 +8,21 @@ import { DeleteIcon } from "./icons/DeleteIcon";
 import { AddIcon } from "./icons/AddIcon";
 import { isEmpty } from "../utils/isEmpty";
 import { ImageCardSkeleton } from "./image-card/ImageCardSkeleton";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 function AprimoContentSelector() {
   const { aprimoValue, setAprimoImage, params } = useContentFieldExtension();
+  const TENANT_URL = params?.aprimoConfig?.tenantUrl;
 
   const openContentSelector = () => {
-    const tenantUrl = params?.aprimoConfig?.tenantUrl;
     const encodedOptions = window.btoa(
       JSON.stringify({
         select: "singlerendition",
         limitingSearchExpression: 'ContentType = "Image"',
       })
     );
-    const contentSelectorUrl = `${tenantUrl}/dam/selectcontent#options=${encodedOptions}`;
     const handleMessageEvent = async (event: MessageEvent) => {
-      if (event.origin !== tenantUrl) {
+      if (event.origin !== TENANT_URL) {
         return; // exit if origin is not Aprimo
       }
       if (event.data.result === "cancel") {
@@ -34,7 +34,14 @@ function AprimoContentSelector() {
     };
 
     window.addEventListener("message", handleMessageEvent, false);
-    window.open(contentSelectorUrl, "selector");
+    window.open(
+      `${TENANT_URL}/dam/selectcontent#options=${encodedOptions}`,
+      "selector"
+    );
+  };
+
+  const openInAprimo = () => {
+    window.open(`${TENANT_URL}/dam/contentitems/${aprimoValue?.id}`);
   };
 
   const removeImage = async () => {
@@ -61,6 +68,9 @@ function AprimoContentSelector() {
                   title={aprimoValue?.title}
                 />
                 <ImageCardActions>
+                  <Fab color="secondary" onClick={openInAprimo}>
+                    <OpenInNewIcon />
+                  </Fab>
                   <Fab color="secondary" onClick={removeImage}>
                     <DeleteIcon />
                   </Fab>
