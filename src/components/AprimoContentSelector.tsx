@@ -47,11 +47,11 @@ function AprimoContentSelector() {
                     {aprimoValue.title}
                   </Typography>
                   <Typography variant="subtitle2" component="h3">
-                    {aprimoValue?.id}
+                    {aprimoValue.id}
                   </Typography>
                 </CardContent>
                 <ImageCardMedia
-                  image={aprimoValue.rendition.publicuri}
+                  image={aprimoValue.rendition?.publicuri}
                   title={aprimoValue.title}
                 />
               </ImageCard>
