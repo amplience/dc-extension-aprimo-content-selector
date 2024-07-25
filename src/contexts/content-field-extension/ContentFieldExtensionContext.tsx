@@ -1,14 +1,10 @@
 import { ContentFieldExtension } from "dc-extensions-sdk";
 import { createContext } from "react";
 
-export type AprimoImage = {
+export type AprimoValue = {
   id: string;
   title: string;
   rendition: { id: string; publicuri: string };
-};
-
-export type AprimoValue = {
-  aprimoImage?: AprimoImage;
 };
 
 export type Params = {
@@ -24,7 +20,7 @@ export type ContentFieldExtensionContextState = {
   readOnly: boolean;
   params?: Params;
   aprimoValue?: AprimoValue;
-  setAprimoImage: (aprimoImage: AprimoImage) => Promise<void>;
+  setAprimoImage: (aprimoImage: AprimoValue) => Promise<void>;
 };
 
 export const ContentFieldExtensionContext =

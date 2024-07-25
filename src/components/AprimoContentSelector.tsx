@@ -1,4 +1,8 @@
+import { Button, CardContent, Container, Typography } from "@mui/material";
 import { useContentFieldExtension } from "../contexts/content-field-extension/ContentFieldExtensionHook";
+import { ImageCard } from "./image-card/ImageCard";
+import { ImageCardMedia } from "./image-card/ImageCardMedia";
+import { ImageCardBox } from "./image-card/ImageCardBox";
 
 function AprimoContentSelector() {
   const { aprimoValue, setAprimoImage, params } = useContentFieldExtension();
@@ -30,13 +34,30 @@ function AprimoContentSelector() {
 
   return (
     <>
-      <div className="card">
-        <button onClick={openContentSelector}>
-          Open Aprimo Content Selector
-        </button>
-        <div>
-          <code>{JSON.stringify(aprimoValue, null, 2)}</code>
-        </div>
+      <div>
+        <Button onClick={openContentSelector} autoFocus>
+          Select Asset from Aprimo
+        </Button>
+        {aprimoValue && (
+          <Container maxWidth={false}>
+            <ImageCardBox my={4}>
+              <ImageCard>
+                <CardContent>
+                  <Typography variant="subtitle1" component="h2">
+                    {aprimoValue.title}
+                  </Typography>
+                  <Typography variant="subtitle2" component="h3">
+                    {aprimoValue?.id}
+                  </Typography>
+                </CardContent>
+                <ImageCardMedia
+                  image={aprimoValue.rendition.publicuri}
+                  title={aprimoValue.title}
+                />
+              </ImageCard>
+            </ImageCardBox>
+          </Container>
+        )}
       </div>
     </>
   );

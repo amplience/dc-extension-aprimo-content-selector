@@ -1,7 +1,6 @@
 import { init, ContentFieldExtension } from "dc-extensions-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import {
-  AprimoImage,
   AprimoValue,
   ContentFieldExtensionContext,
 } from "./ContentFieldExtensionContext";
@@ -35,8 +34,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
     return () => {};
   }, []);
 
-  const setAprimoImage = async (aprimoImage: AprimoImage) => {
-    await sdk?.field.setValue({ aprimoImage });
+  const setAprimoImage = async (aprimoImage: AprimoValue) => {
+    await sdk?.field.setValue(aprimoImage);
     const updatedAprimoValue = await sdk?.field.getValue();
     setAprimoValue(updatedAprimoValue);
   };
