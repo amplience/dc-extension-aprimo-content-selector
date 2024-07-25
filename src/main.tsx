@@ -10,6 +10,10 @@ const theme = createTheme({
     primary: {
       main: "#039be5",
     },
+    secondary: {
+      main: "#ccc",
+      contrastText: "#fff",
+    },
   },
   typography: {
     allVariants: {
@@ -22,6 +26,17 @@ const theme = createTheme({
         subtitle1: {
           fontSize: "14px",
           fontWeight: "600",
+        },
+      },
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          boxShadow: "none",
+          fill: "#fff",
+          "&:hover": {
+            backgroundColor: "#039be5",
+          },
         },
       },
     },

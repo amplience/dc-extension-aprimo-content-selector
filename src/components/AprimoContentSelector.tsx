@@ -1,8 +1,13 @@
-import { Button, CardContent, Container, Typography } from "@mui/material";
+import { CardContent, Container, Fab, Typography } from "@mui/material";
 import { useContentFieldExtension } from "../contexts/content-field-extension/ContentFieldExtensionHook";
 import { ImageCard } from "./image-card/ImageCard";
 import { ImageCardMedia } from "./image-card/ImageCardMedia";
 import { ImageCardBox } from "./image-card/ImageCardBox";
+import { ImageCardActions } from "./image-card/ImageCardActions";
+import { DeleteIcon } from "./icons/DeleteIcon";
+import { AddIcon } from "./icons/AddIcon";
+import { isEmpty } from "../utils/isEmpty";
+import { ImageCardSkeleton } from "./image-card/ImageCardSkeleton";
 
 function AprimoContentSelector() {
   const { aprimoValue, setAprimoImage, params } = useContentFieldExtension();
@@ -32,29 +37,49 @@ function AprimoContentSelector() {
     window.open(contentSelectorUrl, "selector");
   };
 
+  const removeImage = async () => {
+    await setAprimoImage({});
+  };
+
   return (
     <>
       <div>
-        <Button onClick={openContentSelector} autoFocus>
-          Select Asset from Aprimo
-        </Button>
-        {aprimoValue && (
+        {!isEmpty(aprimoValue) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCard>
                 <CardContent>
                   <Typography variant="subtitle1" component="h2">
-                    {aprimoValue.title}
+                    {aprimoValue?.title}
                   </Typography>
                   <Typography variant="subtitle2" component="h3">
-                    {aprimoValue.id}
+                    {aprimoValue?.id}
                   </Typography>
                 </CardContent>
                 <ImageCardMedia
-                  image={aprimoValue.rendition?.publicuri}
-                  title={aprimoValue.title}
+                  image={aprimoValue?.rendition?.publicuri}
+                  title={aprimoValue?.title}
                 />
+                <ImageCardActions>
+                  <Fab color="secondary" onClick={removeImage}>
+                    <DeleteIcon />
+                  </Fab>
+                </ImageCardActions>
               </ImageCard>
+            </ImageCardBox>
+          </Container>
+        )}
+        {isEmpty(aprimoValue) && (
+          <Container maxWidth={false}>
+            <ImageCardBox my={4}>
+              <ImageCardSkeleton>
+                <Fab
+                  onClick={openContentSelector}
+                  sx={{ backgroundColor: "#fff", fill: "#ccc" }}
+                >
+                  <AddIcon />
+                </Fab>
+              </ImageCardSkeleton>
             </ImageCardBox>
           </Container>
         )}

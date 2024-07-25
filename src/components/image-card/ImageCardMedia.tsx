@@ -5,7 +5,7 @@ export const ImageCardMedia = styled(CardMedia)`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: top;
-  margin: 0 10px;
+  margin: 0 10px 10px 10px;
   align-self: stretch;
   height: 100%;
 `;

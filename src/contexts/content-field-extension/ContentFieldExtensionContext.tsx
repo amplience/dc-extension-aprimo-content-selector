@@ -2,9 +2,9 @@ import { ContentFieldExtension } from "dc-extensions-sdk";
 import { createContext } from "react";
 
 export type AprimoValue = {
-  id: string;
-  title: string;
-  rendition: { id: string; publicuri: string };
+  id?: string;
+  title?: string;
+  rendition?: { id: string; publicuri: string };
 };
 
 export type Params = {
