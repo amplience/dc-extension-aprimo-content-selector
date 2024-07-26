@@ -11,6 +11,10 @@ export type Params = {
   aprimoConfig?: {
     tenantUrl: string;
   };
+  amplienceConfig?: {
+    bucketId: string;
+    folderId?: string;
+  };
 };
 
 export type ContentFieldExtensionContextState = {
@@ -22,7 +26,8 @@ export type ContentFieldExtensionContextState = {
   title: string;
   description: string;
   aprimoValue?: AprimoValue;
-  setAprimoImage: (aprimoImage: AprimoValue) => Promise<void>;
+  addAprimoImage: (aprimoImage: AprimoValue) => Promise<void>;
+  removeAprimoImage: () => Promise<void>;
 };
 
 export const ContentFieldExtensionContext =

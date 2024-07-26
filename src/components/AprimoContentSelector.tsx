@@ -12,8 +12,14 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { FieldDetails } from "./field-details/FieldDetails";
 
 function AprimoContentSelector() {
-  const { aprimoValue, setAprimoImage, params, title, description } =
-    useContentFieldExtension();
+  const {
+    aprimoValue,
+    addAprimoImage,
+    removeAprimoImage,
+    params,
+    title,
+    description,
+  } = useContentFieldExtension();
   const TENANT_URL = params?.aprimoConfig?.tenantUrl;
 
   const openContentSelector = () => {
@@ -32,7 +38,7 @@ function AprimoContentSelector() {
       }
       const aprimoImage = event.data.selection[0] || {};
 
-      await setAprimoImage(aprimoImage);
+      await addAprimoImage(aprimoImage);
     };
 
     window.addEventListener("message", handleMessageEvent, false);
@@ -47,7 +53,7 @@ function AprimoContentSelector() {
   };
 
   const removeImage = async () => {
-    await setAprimoImage({});
+    await removeAprimoImage();
   };
 
   return (
