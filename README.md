@@ -5,8 +5,8 @@ This extension allows customers to browse and select files from [Aprimo DAM](htt
 ## Usage Detail
 
 - Interface to launch the Aprimo Content Selector in `singlerendition` mode.
-- User can select an asset and an rendition.
-- Upon selection the JSON data from Aprimo is stored in the - content form for use.
+- User can select an asset and a rendition.
+- Upon selection the JSON data from Aprimo is stored in the content form for use.
 - When no asset is selected, a blank card is displayed with the option to add an asset and JSON content is removed.
 
 When an asset (and rendition) have been succesfully selected the card will update to show:
@@ -34,7 +34,7 @@ When an asset (and rendition) have been succesfully selected the card will updat
 
 ### Register Extension
 
-This extension needs to be [registered](https://amplience.com/docs/development/registeringextensions.html) against a Hub with in the Dynamic Content application (Developer -> Extensions), for it to load within that Hub.
+This extension needs to be [registered](https://amplience.com/docs/development/registeringextensions.html) against a Hub in the Dynamic Content application (Developer -> Extensions), for it to load within that Hub.
 
 - Category: Content Field
 - Label: Aprimo Content Selector
@@ -123,7 +123,7 @@ This is an example schema using the extension:
 
 ## Integration
 
-When an asset is selected in from Aprimo it is available in the Amplience Content. The JSON stored is exactly as returned from the Aprimo Content Selector when a rendition is selected.
+When an asset is selected from Aprimo it is available in the Amplience Content Hub. The JSON stored is exactly as returned from the Aprimo Content Selector when a rendition is selected.
 
 Example:
 
@@ -167,7 +167,7 @@ This will produce a `dist` folder in the root of the project. You can use the fi
 
 ## Known Limitations
 
-1. This extension is configured to worth with Image assets from Aprimo.
+1. This extension is configured to work with Image assets from Aprimo.
 
 2. This extension is limited to the response data from Aprimo Content Selector for integration.
 
