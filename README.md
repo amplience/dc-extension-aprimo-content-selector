@@ -167,6 +167,10 @@ This will produce a `dist` folder in the root of the project. You can use the fi
 
 ## Known Limitations
 
+1. This extension is configured to worth with Image assets from Aprimo.
+
+2. This extension is limited to the response data from Aprimo Content Selector for integration.
+
 ## Warranty & Support
 
 This is an _open source_ demonstration to show possible patterns and comes with no support or warranty.
