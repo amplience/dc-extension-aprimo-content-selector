@@ -80,7 +80,7 @@ Body:
 
 ```json
 {
-  "name": "Aprimo Selector",
+  "title": "Aprimo Selector",
   "description": "Allows selection of assets from Aprimo DAM",
   "type": "object",
   "ui:extension": {
@@ -109,7 +109,7 @@ This is an example schema using the extension:
   "type": "object",
   "properties": {
     "aprimo": {
-      "name": "Aprima Selector",
+      "title": "Aprimo Selector",
       "description": "Allows selection of assets from Aprimo DAM",
       "type": "object",
       "ui:extension": {
