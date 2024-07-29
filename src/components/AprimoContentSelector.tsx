@@ -19,6 +19,7 @@ function AprimoContentSelector() {
     params,
     title,
     description,
+    thumbUrl,
   } = useContentFieldExtension();
   const TENANT_URL = params?.aprimoConfig?.tenantUrl;
 
@@ -49,7 +50,9 @@ function AprimoContentSelector() {
   };
 
   const openInAprimo = () => {
-    window.open(`${TENANT_URL}/dam/contentitems/${aprimoValue?.id}`);
+    window.open(
+      `${TENANT_URL}/dam/contentitems/${aprimoValue?.aprimoData?.id}`
+    );
   };
 
   const removeImage = async () => {
@@ -60,21 +63,23 @@ function AprimoContentSelector() {
     <>
       <div>
         <FieldDetails title={title} description={description} />
-        {!isEmpty(aprimoValue) && (
+        {!isEmpty(aprimoValue?.aprimoData) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCard>
                 <CardContent>
                   <Typography variant="subtitle1" component="h2">
-                    {aprimoValue?.title}
+                    {aprimoValue?.aprimoData?.title}
                   </Typography>
                   <Typography variant="subtitle2" component="h3">
-                    {aprimoValue?.id}
+                    {aprimoValue?.aprimoData?.id}
                   </Typography>
                 </CardContent>
                 <ImageCardMedia
-                  image={aprimoValue?.rendition?.publicuri}
-                  title={aprimoValue?.title}
+                  image={
+                    thumbUrl || aprimoValue?.aprimoData?.rendition?.publicuri
+                  }
+                  title={aprimoValue?.aprimoData?.title}
                 />
                 <ImageCardActions>
                   <Fab color="secondary" onClick={openInAprimo}>
@@ -88,7 +93,7 @@ function AprimoContentSelector() {
             </ImageCardBox>
           </Container>
         )}
-        {isEmpty(aprimoValue) && (
+        {isEmpty(aprimoValue?.aprimoData) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCardSkeleton>

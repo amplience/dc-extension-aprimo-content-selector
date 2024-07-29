@@ -1,6 +1,7 @@
 import { init, ContentFieldExtension } from "dc-extensions-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import {
+  AprimoData,
   AprimoValue,
   ContentFieldExtensionContext,
   Params,
@@ -17,6 +18,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
   const [params, setParams] = useState<Params>({});
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [thumbUrl, setThumbUrl] = useState("");
 
   useEffect(() => {
     const setupSdk = async () => {
@@ -41,22 +43,36 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
     return () => {};
   }, []);
 
-  const addAprimoImage = async (aprimoImage: AprimoValue) => {
-    await sdk?.field.setValue(aprimoImage);
-    const updatedAprimoValue = await sdk?.field.getValue();
-    setAprimoValue(updatedAprimoValue);
+  useEffect(() => {
+    const populateThumbUrl = async () => {
+      if (sdk && aprimoValue?.nativeImage?.id) {
+        const asset = await sdk.assets.getById(aprimoValue?.nativeImage?.id);
+        setThumbUrl(asset?.thumbURL);
+      }
+    };
 
-    if (!isEmpty(aprimoImage) && params?.amplienceConfig?.bucketId) {
-      await saveToNativeImage(aprimoImage);
+    populateThumbUrl();
+  }, [aprimoValue]);
+
+  const addAprimoImage = async (aprimoImage: AprimoData) => {
+    const modifiedFieldValue = { ...aprimoValue, aprimoData: aprimoImage };
+
+    if (!isEmpty(aprimoImage) && !isEmpty(params.amplienceConfig)) {
+      const nativeImage = await createNativeImage(aprimoImage);
+      modifiedFieldValue.nativeImage = nativeImage;
     }
+
+    await sdk?.field.setValue(modifiedFieldValue);
+    setAprimoValue(await sdk?.field.getValue());
   };
 
   const removeAprimoImage = async () => {
     await sdk?.field.setValue({});
-    await setAprimoValue({});
+    await setAprimoValue({ aprimoData: {}, nativeImage: {} });
+    setThumbUrl("");
   };
 
-  const saveToNativeImage = async (aprimoImage: AprimoValue) => {
+  const createNativeImage = async (aprimoImage: AprimoData) => {
     if (!sdk) {
       throw new Error("Unable to save image - sdk has not been initialised");
     }
@@ -73,18 +89,28 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       );
     }
 
-    const assetUploadService = new ContentHubService(sdk, {
+    const contentHubService = new ContentHubService(sdk, {
       bucketId: params?.amplienceConfig.bucketId,
       folderId: params?.amplienceConfig?.folderId,
     });
 
-    const uploadedAsset = await assetUploadService.uploadToAssetStore(
+    const uploadedAsset = await contentHubService.uploadToAssetStore(
       aprimoImage.rendition?.publicuri,
-      `${aprimoImage.title}-${aprimoImage.rendition?.id}` // TODO: change to rendition id
+      `${aprimoImage.title}-${aprimoImage.rendition?.id}`
     );
 
-    const storedAsset = await assetUploadService.getAssetById(uploadedAsset.id);
-    console.log(JSON.stringify(storedAsset, null, 2));
+    const storedAsset = await contentHubService.getAssetById(uploadedAsset.id);
+
+    return {
+      _meta: {
+        schema:
+          "http://bigcontent.io/cms/schema/v1/core#/definitions/image-link",
+      },
+      id: storedAsset.id,
+      name: storedAsset.name,
+      endpoint: params.amplienceConfig.endpoint,
+      defaultHost: params.amplienceConfig.defaultHost,
+    };
   };
 
   return (
@@ -99,6 +125,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
           formValue,
           initialAprimoValue,
           aprimoValue,
+          thumbUrl,
           addAprimoImage,
           removeAprimoImage,
         }}
