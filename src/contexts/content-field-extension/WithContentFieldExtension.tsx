@@ -80,7 +80,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
 
     const uploadedAsset = await assetUploadService.uploadToAssetStore(
       aprimoImage.rendition?.publicuri,
-      `${aprimoImage.title}-${aprimoImage.id}`
+      `${aprimoImage.title}-${aprimoImage.rendition?.id}` // TODO: change to rendition id
     );
 
     const storedAsset = await assetUploadService.getAssetById(uploadedAsset.id);
