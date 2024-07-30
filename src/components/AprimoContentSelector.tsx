@@ -6,10 +6,10 @@ import { ImageCardBox } from "./image-card/ImageCardBox";
 import { ImageCardActions } from "./image-card/ImageCardActions";
 import { DeleteIcon } from "./icons/DeleteIcon";
 import { AddIcon } from "./icons/AddIcon";
-import { isEmpty } from "../utils/isEmpty";
 import { ImageCardSkeleton } from "./image-card/ImageCardSkeleton";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { FieldDetails } from "./field-details/FieldDetails";
+import isEmpty from "lodash.isempty";
 
 function AprimoContentSelector() {
   const {

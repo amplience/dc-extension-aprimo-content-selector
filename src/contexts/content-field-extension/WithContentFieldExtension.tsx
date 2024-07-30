@@ -7,7 +7,7 @@ import {
   Params,
 } from "./ContentFieldExtensionContext";
 import ContentHubService from "../../services/ContentHubService";
-import { isEmpty } from "../../utils/isEmpty";
+import isEmpty from "lodash.isempty";
 
 function WithContentFieldExtension({ children }: { children: ReactNode }) {
   const [sdk, setSDK] = useState<ContentFieldExtension<AprimoValue>>();
@@ -56,7 +56,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
 
   const addAprimoImage = async (aprimoImage: AprimoData) => {
     const modifiedFieldValue = { ...aprimoValue, aprimoData: aprimoImage };
-
+    console.log(params.amplienceConfig, !isEmpty(params.amplienceConfig));
     if (!isEmpty(aprimoImage) && !isEmpty(params.amplienceConfig)) {
       const amplienceImage = await createAmplienceImage(aprimoImage);
       modifiedFieldValue.amplienceImage = amplienceImage;
