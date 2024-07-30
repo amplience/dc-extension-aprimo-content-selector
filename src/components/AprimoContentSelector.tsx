@@ -28,6 +28,7 @@ function AprimoContentSelector() {
       JSON.stringify({
         select: "singlerendition",
         limitingSearchExpression: 'ContentType = "Image"',
+        accept: "Save to Amplience",
         ...aprimoConfig?.options,
       })
     );
