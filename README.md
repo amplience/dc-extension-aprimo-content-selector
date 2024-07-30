@@ -68,10 +68,10 @@ Use the following installation parameters:
   },
   "amplienceConfig": {
     "endpoint": "<your_amplience_dam_endpoint>",
-    "defaultHost": "cdn.media.amplience.net",
+    "defaultHost": "<your_amplience_default_host>", // optional (default = `cdn.media.amplience.net`)
     "bucketId": "<your_amplience_dam_ducket_id>", // optional
     "folderId": "<your_amplience_dam_ducket_id>", // optional
-    "uploadMode": "<your_amplience_upload mode>" // optional - `overwrite` or `renameUnique` (defaults to `overwrite`)
+    "uploadMode": "<your_amplience_upload mode>" // optional - `overwrite` or `renameUnique` (defaults = `overwrite`)
   }
 }
 ```

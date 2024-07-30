@@ -77,11 +77,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       throw new Error("Unable to create image - sdk has not been initialised");
     }
 
-    if (
-      !params?.amplienceConfig?.endpoint ||
-      !params?.amplienceConfig?.defaultHost
-    ) {
-      throw new Error("Unable to create image - missing endpoint/defaultHost");
+    if (!params?.amplienceConfig?.endpoint) {
+      throw new Error("Unable to create image - missing endpoint");
     }
 
     if (!aprimoImage.rendition?.publicuri) {
@@ -109,7 +106,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       id: storedAsset.id,
       name: storedAsset.name,
       endpoint: params?.amplienceConfig?.endpoint,
-      defaultHost: params?.amplienceConfig?.defaultHost,
+      defaultHost:
+        params?.amplienceConfig?.defaultHost || "cdn.media.amplience.net",
     };
   };
 
