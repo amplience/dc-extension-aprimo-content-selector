@@ -51,7 +51,12 @@ When an asset (and rendition) have been succesfully selected the card will updat
 
 Process is as per the Aprimo Only (Standalone) usage with the following additions:
 
-- Upon selection, the rendition is automatically uploaded to the Amplience Content Hub and the Amplience Image property is
+- Upon selection, the rendition is automatically uploaded to the Amplience Content Hub and the Amplience Image property is populated.
+- The name of the asset uploaded is the in the format `{title}-{rendition.id}` from the aprimo.
+- Uses configuration for the following options:
+  - Upload to specific Bucket
+  - Upload to specific Folder
+  - Overwrite assets or rename unique
 - Removal of the asset will remove all data (Aprimo and Amplience) from the Amplience Content Form
 
 ## Pre-requisites
@@ -97,6 +102,8 @@ This extension needs to be [registered](https://amplience.com/docs/development/r
 Under the Permissions tab, select the following:
 
 API Permissions:
+
+> Note: API permissions only required if using Amplience Images
 
 - ✅ Read access
 - ✅ Modify access
