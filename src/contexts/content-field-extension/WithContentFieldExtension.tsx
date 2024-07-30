@@ -45,8 +45,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const populateThumbUrl = async () => {
-      if (sdk && aprimoValue?.nativeImage?.id) {
-        const asset = await sdk.assets.getById(aprimoValue?.nativeImage?.id);
+      if (sdk && aprimoValue?.amplienceImage?.id) {
+        const asset = await sdk.assets.getById(aprimoValue?.amplienceImage?.id);
         setThumbUrl(asset?.thumbURL);
       }
     };
@@ -58,8 +58,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
     const modifiedFieldValue = { ...aprimoValue, aprimoData: aprimoImage };
 
     if (!isEmpty(aprimoImage) && !isEmpty(params.amplienceConfig)) {
-      const nativeImage = await createNativeImage(aprimoImage);
-      modifiedFieldValue.nativeImage = nativeImage;
+      const amplienceImage = await createAmplienceImage(aprimoImage);
+      modifiedFieldValue.amplienceImage = amplienceImage;
     }
 
     await sdk?.field.setValue(modifiedFieldValue);
@@ -68,30 +68,30 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
 
   const removeAprimoImage = async () => {
     await sdk?.field.setValue({});
-    await setAprimoValue({ aprimoData: {}, nativeImage: {} });
+    await setAprimoValue({ aprimoData: {}, amplienceImage: {} });
     setThumbUrl("");
   };
 
-  const createNativeImage = async (aprimoImage: AprimoData) => {
+  const createAmplienceImage = async (aprimoImage: AprimoData) => {
     if (!sdk) {
-      throw new Error("Unable to save image - sdk has not been initialised");
+      throw new Error("Unable to create image - sdk has not been initialised");
     }
 
-    if (!params?.amplienceConfig?.bucketId) {
-      throw new Error(
-        "Unable to save to Content Hub - Bucket has not been configured"
-      );
+    if (
+      !params?.amplienceConfig?.endpoint ||
+      !params?.amplienceConfig?.defaultHost
+    ) {
+      throw new Error("Unable to create image - missing endpoint/defaultHost");
     }
 
     if (!aprimoImage.rendition?.publicuri) {
-      throw new Error(
-        "Unable to save to Content Hub - Aprimo image url is missing"
-      );
+      throw new Error("Unable to create image - Aprimo image url is missing");
     }
 
     const contentHubService = new ContentHubService(sdk, {
-      bucketId: params?.amplienceConfig.bucketId,
+      bucketId: params?.amplienceConfig?.bucketId,
       folderId: params?.amplienceConfig?.folderId,
+      mode: params?.amplienceConfig?.uploadMode,
     });
 
     const uploadedAsset = await contentHubService.uploadToAssetStore(
@@ -108,8 +108,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       },
       id: storedAsset.id,
       name: storedAsset.name,
-      endpoint: params.amplienceConfig.endpoint,
-      defaultHost: params.amplienceConfig.defaultHost,
+      endpoint: params?.amplienceConfig?.endpoint,
+      defaultHost: params?.amplienceConfig?.defaultHost,
     };
   };
 

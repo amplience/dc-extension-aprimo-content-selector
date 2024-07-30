@@ -67,21 +67,24 @@ export const imageMimeTypeToExtension = (
 
 export default class ContentHubService {
   private basepath: string;
-  private bucketId: string;
+  private bucketId?: string;
   private folderId?: string;
+  private mode: string;
 
   constructor(
     private readonly sdk: ContentFieldExtension<AprimoValue>,
     options: {
       basepath?: string;
-      bucketId: string;
+      bucketId?: string;
       folderId?: string;
+      mode?: string;
     }
   ) {
     this.basepath =
       options.basepath || "https://api.amplience.net/v2/content/media/assets";
     this.bucketId = options.bucketId;
     this.folderId = options.folderId;
+    this.mode = options.mode || "overwrite";
   }
 
   async uploadToAssetStore(
@@ -108,14 +111,14 @@ export default class ContentHubService {
 
     const payload: AssetStoreRequestBody = {
       hubId: this.sdk.hub.id,
-      mode: "overwrite",
+      mode: this.mode,
       assets: [
         {
           src: url,
           name: srcName,
           srcName: `${srcName}.${fileExtension}`,
           label: `${srcName}.${fileExtension}`,
-          bucketID: this.bucketId,
+          ...(this.bucketId ? { bucketID: this.bucketId } : {}),
           ...(this.folderId ? { folderID: this.folderId } : {}),
         },
       ],

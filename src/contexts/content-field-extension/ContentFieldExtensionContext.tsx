@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 export type AprimoValue = {
   aprimoData?: AprimoData;
-  nativeImage?: {
+  amplienceImage?: {
     _meta?: {
       schema: string;
     };
@@ -27,8 +27,9 @@ export type Params = {
   amplienceConfig?: {
     endpoint: string;
     defaultHost: string;
-    bucketId: string;
+    bucketId?: string;
     folderId?: string;
+    uploadMode?: string;
   };
 };
 

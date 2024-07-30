@@ -47,6 +47,11 @@ This extension needs to be [registered](https://amplience.com/docs/development/r
 
 Under the Permissions tab, select the following:
 
+API Permissions:
+
+- ✅ Read access
+- ✅ Modify access
+
 Sandbox Permissions:
 
 - ✅ Allow Pop-ups
@@ -60,6 +65,13 @@ Use the following installation parameters:
 {
   "aprimoConfig": {
     "tenantUrl": "<your_aprimo_dam_tenant_url>"
+  },
+  "amplienceConfig": {
+    "endpoint": "<your_amplience_dam_endpoint>",
+    "defaultHost": "cdn.media.amplience.net",
+    "bucketId": "<your_amplience_dam_ducket_id>", // optional
+    "folderId": "<your_amplience_dam_ducket_id>", // optional
+    "uploadMode": "<your_amplience_upload mode>" // optional - `overwrite` or `renameUnique` (defaults to `overwrite`)
   }
 }
 ```
@@ -85,6 +97,20 @@ Body:
   "type": "object",
   "ui:extension": {
     "name": "aprimo-content-selector"
+  },
+  "properties": {
+    "amplienceImage": {
+      "title": "Amplience Image",
+      "allOf": [
+        {
+          "$ref": "http://bigcontent.io/cms/schema/v1/core#/definitions/image-link"
+        }
+      ]
+    },
+    "aprimoData": {
+      "title": "Aprimo Image Data",
+      "type": "object"
+    }
   }
 }
 ```
@@ -113,7 +139,22 @@ This is an example schema using the extension:
       "description": "Allows selection of assets from Aprimo DAM",
       "type": "object",
       "ui:extension": {
-        "name": "aprimo-content-selector"
+        "name": "aprimo-content-selector",
+        "params": {}
+      },
+      "properties": {
+        "amplienceImage": {
+          "title": "Amplience Image",
+          "allOf": [
+            {
+              "$ref": "http://bigcontent.io/cms/schema/v1/core#/definitions/image-link"
+            }
+          ]
+        },
+        "aprimoData": {
+          "title": "Aprimo Image Data",
+          "type": "object"
+        }
       }
     }
   },
