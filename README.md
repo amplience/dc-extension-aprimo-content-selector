@@ -126,12 +126,24 @@ If only using Aprimo data, use the following installation parameters:
 ```json
 {
   "aprimoConfig": {
-    "tenantUrl": "<your_aprimo_dam_tenant_url>"
+    "tenantUrl": "<your_aprimo_dam_tenant_url>",
+    "options": {} // Optional (Your Aprimo Content Selector options in JSON format)
   }
 }
 ```
 
 Example `tenantUrl` Format: `https://{youraccount}.dam.aprimo.com`
+
+See [Aprimo documentation](https://developers.aprimo.com/digital-asset-management/aprimo-integration-tools/aprimo-content-selector/) for options.
+
+If no options attribute is listed, then default options JSON will be used which is:
+
+```json
+{
+  "select": "singlerendition",
+  "limitingSearchExpression": "ContentType = \"Image\""
+}
+```
 
 #### Amplience Images
 
@@ -140,7 +152,8 @@ If only using Amplience Images, use the following installation parameters:
 ```json
 {
   "aprimoConfig": {
-    "tenantUrl": "<your_aprimo_dam_tenant_url>"
+    "tenantUrl": "<your_aprimo_dam_tenant_url>",,
+    "options": {} // Optional (Your Aprimo Content Selector options in JSON format)
   },
   "amplienceConfig": {
     // optional (only required for Amplience Images)
@@ -381,3 +394,7 @@ A: By default this demonstration only allows selection of content which is `Cont
 **Q: I have selected an image but a thumbnail is not showing in Amplience**
 
 A: The rendition selected is probably not suitable to display as an image in a web browser. An example may be a `.tif` file where the rendition is also a `.tif`
+
+**Q: Options data for Aprimo looks different**
+
+A: This is because the JSON has propery names without strings in Aprimo (pre-stringified)
