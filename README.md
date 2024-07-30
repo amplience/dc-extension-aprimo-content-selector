@@ -52,7 +52,7 @@ When an asset (and rendition) have been succesfully selected the card will updat
 Process is as per the Aprimo Only (Standalone) usage with the following additions:
 
 - Upon selection, the rendition is automatically uploaded to the Amplience Content Hub and the Amplience Image property is populated.
-- The name of the asset uploaded is the in the format `{title}-{rendition.id}` from the aprimo.
+- The name of the asset uploaded is the in the format `{title}-{rendition.id}` from Aprimo.
 - Uses configuration for the following options:
   - Upload to specific Bucket
   - Upload to specific Folder
@@ -68,7 +68,7 @@ Process is as per the Aprimo Only (Standalone) usage with the following addition
       - Developer permissions or higher to install extension
       - Ability to host extension
     - Optional (for Amplience images):
-      - Access to the [Assets Tab](https://amplience.com/developers/docs/user-guides/basics/dynamic-content/assets-tab/) in your Dynamic Content Hub and ability to upload assets vie the Assets Tab
+      - Access to the [Assets Tab](https://amplience.com/developers/docs/user-guides/basics/dynamic-content/assets-tab/) in your Dynamic Content Hub and ability to upload assets via the Assets Tab
       - Amplience configuration details
         - Media endpoint
         - Default host (only if you have a custom CNAME)
@@ -354,7 +354,7 @@ This will produce a `dist` folder in the root of the project. You can use the fi
 
 2. This extension is limited to the response data from Aprimo Content Selector for integration.
 
-3. This extension will only work in singleRendition mode for the Aprimo Content Selector as this is the only mode which returns as public URI to the selected asset.
+3. This extension will only work in singleRendition mode for the Aprimo Content Selector as this is the only mode which returns a public URI to the selected asset.
 
 ## Warranty & Support
 
