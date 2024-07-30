@@ -1,7 +1,7 @@
 import { ContentFieldExtension } from "dc-extensions-sdk";
 import { createContext } from "react";
 
-export type AprimoValue = {
+export type AprimoFieldValue = {
   aprimoData?: AprimoData;
   amplienceImage?: {
     _meta?: {
@@ -21,28 +21,35 @@ export type AprimoData = {
 };
 
 export type Params = {
-  aprimoConfig?: {
-    tenantUrl: string;
-  };
-  amplienceConfig?: {
-    endpoint: string;
-    defaultHost: string;
-    bucketId?: string;
-    folderId?: string;
-    uploadMode?: string;
-  };
+  aprimoConfig?: AprimoConfig;
+  amplienceConfig?: AmplienceConfig;
+};
+
+export type AprimoConfig = {
+  tenantUrl: string;
+  options: Record<string, unknown>;
+};
+
+export type AmplienceConfig = {
+  endpoint: string;
+  defaultHost?: string;
+  bucketId?: string;
+  folderId?: string;
+  uploadMode?: string;
 };
 
 export type ContentFieldExtensionContextState = {
   sdk: ContentFieldExtension;
-  initialAprimoValue?: AprimoValue;
+  initialAprimoFieldValue?: AprimoFieldValue;
   formValue: unknown;
   readOnly: boolean;
   params?: Params;
   title: string;
   description: string;
-  aprimoValue?: AprimoValue;
+  aprimoFieldValue?: AprimoFieldValue;
   thumbUrl: string;
+  aprimoConfig?: AprimoConfig;
+  amplienceConfig?: AmplienceConfig;
   addAprimoImage: (aprimoImage: AprimoData) => Promise<void>;
   removeAprimoImage: () => Promise<void>;
 };
