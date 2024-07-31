@@ -38,7 +38,7 @@ It also allows configuration to automatically upload selected image file renditi
 - Upon selection the JSON data from Aprimo is stored in the content form for use.
 - When no asset is selected, a blank card is displayed with the option to add an asset and JSON content is removed.
 
-When an asset (and rendition) have been succesfully selected the card will update to show:
+When an asset (and rendition) have been successfully selected the card will update to show:
 
 - A preview of the asset (via the selected rendition `publicuri`)
 - The title of the selected asset
@@ -126,12 +126,25 @@ If only using Aprimo data, use the following installation parameters:
 ```json
 {
   "aprimoConfig": {
-    "tenantUrl": "<your_aprimo_dam_tenant_url>"
+    "tenantUrl": "<your_aprimo_dam_tenant_url>",
+    "options": {} // Optional (Your Aprimo Content Selector options in JSON format)
   }
 }
 ```
 
 Example `tenantUrl` Format: `https://{youraccount}.dam.aprimo.com`
+
+See [Aprimo documentation](https://developers.aprimo.com/digital-asset-management/aprimo-integration-tools/aprimo-content-selector/) for options.
+
+If no options attribute is listed, then default options JSON will be used which is:
+
+```json
+{
+  "select": "singlerendition",
+  "limitingSearchExpression": "ContentType = \"Image\"",
+  "accept": "Save to Amplience"
+}
+```
 
 #### Amplience Images
 
@@ -140,7 +153,8 @@ If only using Amplience Images, use the following installation parameters:
 ```json
 {
   "aprimoConfig": {
-    "tenantUrl": "<your_aprimo_dam_tenant_url>"
+    "tenantUrl": "<your_aprimo_dam_tenant_url>",,
+    "options": {} // Optional (Your Aprimo Content Selector options in JSON format)
   },
   "amplienceConfig": {
     // optional (only required for Amplience Images)
@@ -155,7 +169,7 @@ If only using Amplience Images, use the following installation parameters:
 
 ### Snippet (Optional)
 
-You may also wish to create a [Snippet](https://amplience.com/developers/docs/integrations/extensions/register-use/#adding-snippets-for-content-field-extensions) or mutiple snippets for the extension to make it easier to add to content types. Example below:
+You may also wish to create a [Snippet](https://amplience.com/developers/docs/integrations/extensions/register-use/#adding-snippets-for-content-field-extensions) or multiple snippets for the extension to make it easier to add to content types. Example below:
 
 #### Aprimo Only (Standalone)
 
@@ -321,7 +335,7 @@ Example:
 
 With this response you can use either the `amplienceImage` or the `publicuri` from Aprimo.
 
-The Amplience image has the advantage of load balanced multi-CDN delivery, virtual staging, publishing with content and advanced asset tranformations from the [Amplience Dynamic Media](https://amplience.com/developers/docs/apis/media-delivery/) service, optional [Accelerated Media](https://amplience.com/developers/docs/release-notes/2023/accelerated-media/) tranformations as well as Generative AI capabilities.
+The Amplience image has the advantage of load balanced multi-CDN delivery, virtual staging, publishing with content and advanced asset transformations from the [Amplience Dynamic Media](https://amplience.com/developers/docs/apis/media-delivery/) service, optional [Accelerated Media](https://amplience.com/developers/docs/release-notes/2023/accelerated-media/) tranformations as well as Generative AI capabilities.
 
 ## Running the extension locally
 
@@ -346,7 +360,7 @@ Build the project to produce hostable files using:
 npm run build
 ```
 
-This will produce a `dist` folder in the root of the project. You can use the files to host them statically (e.g. S3) or through your prefered hosting solution (Vercel, Netlify etc.)
+This will produce a `dist` folder in the root of the project. You can use the files to host them statically (e.g. S3) or through your preferred hosting solution (Vercel, Netlify etc.)
 
 ## Known Limitations
 
@@ -381,3 +395,7 @@ A: By default this demonstration only allows selection of content which is `Cont
 **Q: I have selected an image but a thumbnail is not showing in Amplience**
 
 A: The rendition selected is probably not suitable to display as an image in a web browser. An example may be a `.tif` file where the rendition is also a `.tif`
+
+**Q: Options data for Aprimo looks different**
+
+A: This is because the JSON has property names without strings in Aprimo (pre-stringified)

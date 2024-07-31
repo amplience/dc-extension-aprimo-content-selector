@@ -13,25 +13,27 @@ import isEmpty from "lodash.isempty";
 
 function AprimoContentSelector() {
   const {
-    aprimoValue,
+    aprimoFieldValue,
     addAprimoImage,
     removeAprimoImage,
-    params,
+    aprimoConfig,
     title,
     description,
     thumbUrl,
   } = useContentFieldExtension();
-  const TENANT_URL = params?.aprimoConfig?.tenantUrl;
+  const tenantUrl = aprimoConfig?.tenantUrl;
 
   const openContentSelector = () => {
     const encodedOptions = window.btoa(
       JSON.stringify({
         select: "singlerendition",
         limitingSearchExpression: 'ContentType = "Image"',
+        accept: "Save to Amplience",
+        ...aprimoConfig?.options,
       })
     );
     const handleMessageEvent = async (event: MessageEvent) => {
-      if (event.origin !== TENANT_URL) {
+      if (event.origin !== tenantUrl) {
         return; // exit if origin is not Aprimo
       }
       if (event.data.result === "cancel") {
@@ -44,14 +46,14 @@ function AprimoContentSelector() {
 
     window.addEventListener("message", handleMessageEvent, false);
     window.open(
-      `${TENANT_URL}/dam/selectcontent#options=${encodedOptions}`,
+      `${tenantUrl}/dam/selectcontent#options=${encodedOptions}`,
       "selector"
     );
   };
 
   const openInAprimo = () => {
     window.open(
-      `${TENANT_URL}/dam/contentitems/${aprimoValue?.aprimoData?.id}`
+      `${tenantUrl}/dam/contentitems/${aprimoFieldValue?.aprimoData?.id}`
     );
   };
 
@@ -63,23 +65,24 @@ function AprimoContentSelector() {
     <>
       <div>
         <FieldDetails title={title} description={description} />
-        {!isEmpty(aprimoValue?.aprimoData) && (
+        {!isEmpty(aprimoFieldValue?.aprimoData) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCard>
                 <CardContent>
                   <Typography variant="subtitle1" component="h2">
-                    {aprimoValue?.aprimoData?.title}
+                    {aprimoFieldValue?.aprimoData?.title}
                   </Typography>
                   <Typography variant="subtitle2" component="h3">
-                    {aprimoValue?.aprimoData?.id}
+                    {aprimoFieldValue?.aprimoData?.id}
                   </Typography>
                 </CardContent>
                 <ImageCardMedia
                   image={
-                    thumbUrl || aprimoValue?.aprimoData?.rendition?.publicuri
+                    thumbUrl ||
+                    aprimoFieldValue?.aprimoData?.rendition?.publicuri
                   }
-                  title={aprimoValue?.aprimoData?.title}
+                  title={aprimoFieldValue?.aprimoData?.title}
                 />
                 <ImageCardActions>
                   <Fab color="secondary" onClick={openInAprimo}>
@@ -93,7 +96,7 @@ function AprimoContentSelector() {
             </ImageCardBox>
           </Container>
         )}
-        {isEmpty(aprimoValue?.aprimoData) && (
+        {isEmpty(aprimoFieldValue?.aprimoData) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCardSkeleton>

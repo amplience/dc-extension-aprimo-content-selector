@@ -1,6 +1,6 @@
 import { ContentFieldExtension } from "dc-extensions-sdk";
 import { HttpMethod } from "dc-extensions-sdk/dist/types/lib/components/HttpClient";
-import { AprimoValue } from "../contexts/content-field-extension/ContentFieldExtensionContext";
+import { AprimoFieldValue } from "../contexts/content-field-extension/ContentFieldExtensionContext";
 
 export interface AssetStoreRequestBody {
   hubId: string;
@@ -72,7 +72,7 @@ export default class ContentHubService {
   private mode: string;
 
   constructor(
-    private readonly sdk: ContentFieldExtension<AprimoValue>,
+    private readonly sdk: ContentFieldExtension<AprimoFieldValue>,
     options: {
       basepath?: string;
       bucketId?: string;

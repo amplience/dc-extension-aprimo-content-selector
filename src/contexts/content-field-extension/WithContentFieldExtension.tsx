@@ -1,8 +1,10 @@
 import { init, ContentFieldExtension } from "dc-extensions-sdk";
 import { ReactNode, useEffect, useState } from "react";
 import {
+  AmplienceConfig,
+  AprimoConfig,
   AprimoData,
-  AprimoValue,
+  AprimoFieldValue,
   ContentFieldExtensionContext,
   Params,
 } from "./ContentFieldExtensionContext";
@@ -10,26 +12,39 @@ import ContentHubService from "../../services/ContentHubService";
 import isEmpty from "lodash.isempty";
 
 function WithContentFieldExtension({ children }: { children: ReactNode }) {
-  const [sdk, setSDK] = useState<ContentFieldExtension<AprimoValue>>();
-  const [initialAprimoValue, setInitialAprimoValue] = useState<AprimoValue>();
-  const [aprimoValue, setAprimoValue] = useState<AprimoValue>();
+  const [sdk, setSDK] = useState<ContentFieldExtension<AprimoFieldValue>>();
+  const [initialAprimoFieldValue, setInitialAprimoFieldValue] =
+    useState<AprimoFieldValue>();
+  const [aprimoFieldValue, setAprimoFieldValue] = useState<AprimoFieldValue>();
   const [formValue, setFormValue] = useState({});
   const [readOnly, setReadOnly] = useState(false);
   const [params, setParams] = useState<Params>({});
+  const [aprimoConfig, setAprimoConfig] = useState<AprimoConfig>();
+  const [amplienceConfig, setAmplienceConfig] = useState<AmplienceConfig>();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [thumbUrl, setThumbUrl] = useState("");
 
   useEffect(() => {
     const setupSdk = async () => {
-      const sdk = await init<ContentFieldExtension<AprimoValue>>();
-      const initialValue = (await sdk.field.getValue()) as AprimoValue;
-      setInitialAprimoValue(initialValue);
-      setAprimoValue(initialValue);
-      setParams({
+      const sdk = await init<ContentFieldExtension<AprimoFieldValue>>();
+      const params: Params = {
         ...sdk.params.installation,
         ...sdk.params.instance,
-      });
+      };
+      setParams(params);
+      setAprimoConfig(params?.aprimoConfig);
+      if (params?.amplienceConfig) {
+        setAmplienceConfig({
+          defaultHost: "cdn.media.amplience.net",
+          uploadMode: "overwrite",
+          ...params?.amplienceConfig,
+        });
+      }
+      const initialValue = (await sdk.field.getValue()) as AprimoFieldValue;
+      setInitialAprimoFieldValue(initialValue);
+      setAprimoFieldValue(initialValue);
+
       setTitle(sdk.field.schema?.title || "");
       setDescription(sdk.field.schema?.description || "");
       sdk.frame.startAutoResizer();
@@ -45,30 +60,32 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const populateThumbUrl = async () => {
-      if (sdk && aprimoValue?.amplienceImage?.id) {
-        const asset = await sdk.assets.getById(aprimoValue?.amplienceImage?.id);
+      if (sdk && aprimoFieldValue?.amplienceImage?.id) {
+        const asset = await sdk.assets.getById(
+          aprimoFieldValue?.amplienceImage?.id
+        );
         setThumbUrl(asset?.thumbURL);
       }
     };
 
     populateThumbUrl();
-  }, [aprimoValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aprimoFieldValue]);
 
   const addAprimoImage = async (aprimoImage: AprimoData) => {
-    const modifiedFieldValue = { ...aprimoValue, aprimoData: aprimoImage };
-    console.log(params.amplienceConfig, !isEmpty(params.amplienceConfig));
-    if (!isEmpty(aprimoImage) && !isEmpty(params.amplienceConfig)) {
+    const modifiedFieldValue = { ...aprimoFieldValue, aprimoData: aprimoImage };
+    if (!isEmpty(aprimoImage) && !isEmpty(amplienceConfig)) {
       const amplienceImage = await createAmplienceImage(aprimoImage);
       modifiedFieldValue.amplienceImage = amplienceImage;
     }
 
     await sdk?.field.setValue(modifiedFieldValue);
-    setAprimoValue(await sdk?.field.getValue());
+    setAprimoFieldValue(await sdk?.field.getValue());
   };
 
   const removeAprimoImage = async () => {
     await sdk?.field.setValue({});
-    await setAprimoValue({ aprimoData: {}, amplienceImage: {} });
+    await setAprimoFieldValue({ aprimoData: {}, amplienceImage: {} });
     setThumbUrl("");
   };
 
@@ -77,7 +94,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       throw new Error("Unable to create image - sdk has not been initialised");
     }
 
-    if (!params?.amplienceConfig?.endpoint) {
+    if (!amplienceConfig?.endpoint) {
       throw new Error("Unable to create image - missing endpoint");
     }
 
@@ -86,9 +103,9 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
     }
 
     const contentHubService = new ContentHubService(sdk, {
-      bucketId: params?.amplienceConfig?.bucketId,
-      folderId: params?.amplienceConfig?.folderId,
-      mode: params?.amplienceConfig?.uploadMode,
+      bucketId: amplienceConfig?.bucketId,
+      folderId: amplienceConfig?.folderId,
+      mode: amplienceConfig?.uploadMode,
     });
 
     const uploadedAsset = await contentHubService.uploadToAssetStore(
@@ -105,9 +122,8 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       },
       id: storedAsset.id,
       name: storedAsset.name,
-      endpoint: params?.amplienceConfig?.endpoint,
-      defaultHost:
-        params?.amplienceConfig?.defaultHost || "cdn.media.amplience.net",
+      endpoint: amplienceConfig.endpoint,
+      defaultHost: amplienceConfig.defaultHost,
     };
   };
 
@@ -121,9 +137,11 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
           title,
           description,
           formValue,
-          initialAprimoValue,
-          aprimoValue,
+          initialAprimoFieldValue,
+          aprimoFieldValue,
           thumbUrl,
+          aprimoConfig,
+          amplienceConfig,
           addAprimoImage,
           removeAprimoImage,
         }}
