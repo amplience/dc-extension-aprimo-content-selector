@@ -38,7 +38,7 @@ It also allows configuration to automatically upload selected image file renditi
 - Upon selection the JSON data from Aprimo is stored in the content form for use.
 - When no asset is selected, a blank card is displayed with the option to add an asset and JSON content is removed.
 
-When an asset (and rendition) have been succesfully selected the card will update to show:
+When an asset (and rendition) have been successfully selected the card will update to show:
 
 - A preview of the asset (via the selected rendition `publicuri`)
 - The title of the selected asset
@@ -52,7 +52,7 @@ When an asset (and rendition) have been succesfully selected the card will updat
 Process is as per the Aprimo Only (Standalone) usage with the following additions:
 
 - Upon selection, the rendition is automatically uploaded to the Amplience Content Hub and the Amplience Image property is populated.
-- The name of the asset uploaded is the in the format `{title}-{rendition.id}` from the aprimo.
+- The name of the asset uploaded is the in the format `{title}-{rendition.id}` from Aprimo.
 - Uses configuration for the following options:
   - Upload to specific Bucket
   - Upload to specific Folder
@@ -169,7 +169,7 @@ If only using Amplience Images, use the following installation parameters:
 
 ### Snippet (Optional)
 
-You may also wish to create a [Snippet](https://amplience.com/developers/docs/integrations/extensions/register-use/#adding-snippets-for-content-field-extensions) or mutiple snippets for the extension to make it easier to add to content types. Example below:
+You may also wish to create a [Snippet](https://amplience.com/developers/docs/integrations/extensions/register-use/#adding-snippets-for-content-field-extensions) or multiple snippets for the extension to make it easier to add to content types. Example below:
 
 #### Aprimo Only (Standalone)
 
@@ -335,7 +335,7 @@ Example:
 
 With this response you can use either the `amplienceImage` or the `publicuri` from Aprimo.
 
-The Amplience image has the advantage of load balanced multi-CDN delivery, virtual staging, publishing with content and advanced asset tranformations from the [Amplience Dynamic Media](https://amplience.com/developers/docs/apis/media-delivery/) service, optional [Accelerated Media](https://amplience.com/developers/docs/release-notes/2023/accelerated-media/) tranformations as well as Generative AI capabilities.
+The Amplience image has the advantage of load balanced multi-CDN delivery, virtual staging, publishing with content and advanced asset transformations from the [Amplience Dynamic Media](https://amplience.com/developers/docs/apis/media-delivery/) service, optional [Accelerated Media](https://amplience.com/developers/docs/release-notes/2023/accelerated-media/) tranformations as well as Generative AI capabilities.
 
 ## Running the extension locally
 
@@ -360,7 +360,7 @@ Build the project to produce hostable files using:
 npm run build
 ```
 
-This will produce a `dist` folder in the root of the project. You can use the files to host them statically (e.g. S3) or through your prefered hosting solution (Vercel, Netlify etc.)
+This will produce a `dist` folder in the root of the project. You can use the files to host them statically (e.g. S3) or through your preferred hosting solution (Vercel, Netlify etc.)
 
 ## Known Limitations
 
@@ -368,7 +368,7 @@ This will produce a `dist` folder in the root of the project. You can use the fi
 
 2. This extension is limited to the response data from Aprimo Content Selector for integration.
 
-3. This extension will only work in singleRendition mode for the Aprimo Content Selector as this is the only mode which returns as public URI to the selected asset.
+3. This extension will only work in singleRendition mode for the Aprimo Content Selector as this is the only mode which returns a public URI to the selected asset.
 
 ## Warranty & Support
 
@@ -398,4 +398,4 @@ A: The rendition selected is probably not suitable to display as an image in a w
 
 **Q: Options data for Aprimo looks different**
 
-A: This is because the JSON has propery names without strings in Aprimo (pre-stringified)
+A: This is because the JSON has property names without strings in Aprimo (pre-stringified)
