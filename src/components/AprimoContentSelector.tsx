@@ -6,14 +6,21 @@ import { ImageCardBox } from "./image-card/ImageCardBox";
 import { ImageCardActions } from "./image-card/ImageCardActions";
 import { DeleteIcon } from "./icons/DeleteIcon";
 import { AddIcon } from "./icons/AddIcon";
-import { isEmpty } from "../utils/isEmpty";
 import { ImageCardSkeleton } from "./image-card/ImageCardSkeleton";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { FieldDetails } from "./field-details/FieldDetails";
+import isEmpty from "lodash.isempty";
 
 function AprimoContentSelector() {
-  const { aprimoValue, setAprimoImage, params, title, description } =
-    useContentFieldExtension();
+  const {
+    aprimoValue,
+    addAprimoImage,
+    removeAprimoImage,
+    params,
+    title,
+    description,
+    thumbUrl,
+  } = useContentFieldExtension();
   const TENANT_URL = params?.aprimoConfig?.tenantUrl;
 
   const openContentSelector = () => {
@@ -32,7 +39,7 @@ function AprimoContentSelector() {
       }
       const aprimoImage = event.data.selection[0] || {};
 
-      await setAprimoImage(aprimoImage);
+      await addAprimoImage(aprimoImage);
     };
 
     window.addEventListener("message", handleMessageEvent, false);
@@ -43,32 +50,36 @@ function AprimoContentSelector() {
   };
 
   const openInAprimo = () => {
-    window.open(`${TENANT_URL}/dam/contentitems/${aprimoValue?.id}`);
+    window.open(
+      `${TENANT_URL}/dam/contentitems/${aprimoValue?.aprimoData?.id}`
+    );
   };
 
   const removeImage = async () => {
-    await setAprimoImage({});
+    await removeAprimoImage();
   };
 
   return (
     <>
       <div>
         <FieldDetails title={title} description={description} />
-        {!isEmpty(aprimoValue) && (
+        {!isEmpty(aprimoValue?.aprimoData) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCard>
                 <CardContent>
                   <Typography variant="subtitle1" component="h2">
-                    {aprimoValue?.title}
+                    {aprimoValue?.aprimoData?.title}
                   </Typography>
                   <Typography variant="subtitle2" component="h3">
-                    {aprimoValue?.id}
+                    {aprimoValue?.aprimoData?.id}
                   </Typography>
                 </CardContent>
                 <ImageCardMedia
-                  image={aprimoValue?.rendition?.publicuri}
-                  title={aprimoValue?.title}
+                  image={
+                    thumbUrl || aprimoValue?.aprimoData?.rendition?.publicuri
+                  }
+                  title={aprimoValue?.aprimoData?.title}
                 />
                 <ImageCardActions>
                   <Fab color="secondary" onClick={openInAprimo}>
@@ -82,7 +93,7 @@ function AprimoContentSelector() {
             </ImageCardBox>
           </Container>
         )}
-        {isEmpty(aprimoValue) && (
+        {isEmpty(aprimoValue?.aprimoData) && (
           <Container maxWidth={false}>
             <ImageCardBox my={4}>
               <ImageCardSkeleton>
