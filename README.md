@@ -141,7 +141,8 @@ If no options attribute is listed, then default options JSON will be used which 
 ```json
 {
   "select": "singlerendition",
-  "limitingSearchExpression": "ContentType = \"Image\""
+  "limitingSearchExpression": "ContentType = \"Image\"",
+  "accept": "Save to Amplience"
 }
 ```
 
