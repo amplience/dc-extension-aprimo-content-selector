@@ -68,7 +68,7 @@ Process is as per the Aprimo Only (Standalone) usage with the following addition
       - Developer permissions or higher to install extension
       - Ability to host extension
     - Optional (for Amplience images):
-      - Access to the [Assets Tab](https://amplience.com/developers/docs/user-guides/basics/dynamic-content/assets-tab/) in your Dynamic Content Hub and ability to upload assets vie the Assets Tab
+      - Access to the [Assets Tab](https://amplience.com/developers/docs/user-guides/basics/dynamic-content/assets-tab/) in your Dynamic Content Hub and ability to upload assets via the Assets Tab
       - Amplience configuration details
         - Media endpoint
         - Default host (only if you have a custom CNAME)

@@ -69,6 +69,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
     };
 
     populateThumbUrl();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [aprimoFieldValue]);
 
   const addAprimoImage = async (aprimoImage: AprimoData) => {
