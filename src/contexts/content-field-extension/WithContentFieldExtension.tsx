@@ -124,6 +124,7 @@ function WithContentFieldExtension({ children }: { children: ReactNode }) {
       name: storedAsset.name,
       endpoint: amplienceConfig.endpoint,
       defaultHost: amplienceConfig.defaultHost,
+      mimeType: storedAsset.mimeType,
     };
   };
 
