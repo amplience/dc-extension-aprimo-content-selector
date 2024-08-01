@@ -328,7 +328,8 @@ Example:
     "id": "{{id_of_asset_in_amplience}}",
     "name": "{{name_of_asset_in_amplience}}",
     "endpoint": "{{amplience_media_endpoint}}",
-    "defaultHost": "{{amplience_default_host}}"
+    "defaultHost": "{{amplience_default_host}}",
+    "mimeType": "{{amplience_asset_mimeType}}",
   }
 }
 ```
